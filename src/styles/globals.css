@@ -1,3 +1,8 @@
-@tailwindbase;
-@tailwindcomponents;
-@tailwindutilities;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-gradient-to-r from-blue-500 to-purple-500 text-white;
+  -webkit-font-smoothing: antialiased !important;
+}
