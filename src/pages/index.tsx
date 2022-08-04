@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import { Button } from "../components/Button";
+import { Form } from "../components/Form";
 import { Layout } from "../components/Layout";
 import { Table } from "../components/Table";
 import { Client } from "../core/Client";
@@ -30,6 +31,7 @@ const Home: NextPage = () => {
           selectedClient={selectedClient}
           clientExcluded={clientExcluded}
         />
+        <Form client={clients[0]} />
       </Layout>
     </div>
   );
