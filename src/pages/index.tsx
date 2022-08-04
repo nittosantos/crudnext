@@ -7,6 +7,9 @@ import { Table } from "../components/Table";
 import { Client } from "../core/Client";
 
 const Home: NextPage = () => {
+  const [visible, setVisible] = useState<"Table" | "Form">("Table");
+  const [client, setClient] = useState<Client>(Client.void());
+
   const clients = [
     new Client("Nitto", 34, "1"),
     new Client("Jorge", 21, "2"),
@@ -15,15 +18,21 @@ const Home: NextPage = () => {
     new Client("Juliana", 25, "5"),
   ];
 
-  const selectedClient = (client: Client) => {};
+  const selectedClient = (client: Client) => {
+    setClient(client);
+    setVisible("Form");
+  };
 
   const clientExcluded = (client: Client) => {};
 
   function saveClient(client: Client) {
-    console.log(client);
+    setVisible("Table");
   }
 
-  const [visible, setVisible] = useState<"Table" | "Form">("Table");
+  function newClient() {
+    setClient(Client.void());
+    setVisible("Form");
+  }
 
   return (
     <div className="flex justify-center items-center h-screen">
@@ -31,11 +40,7 @@ const Home: NextPage = () => {
         {visible === "Table" ? (
           <>
             <div className="flex justify-end">
-              <Button
-                color="green"
-                className="mb-4"
-                onClick={() => setVisible("Form")}
-              >
+              <Button color="green" className="mb-4" onClick={newClient}>
                 Novo Cliente
               </Button>
             </div>
@@ -47,7 +52,7 @@ const Home: NextPage = () => {
           </>
         ) : (
           <Form
-            client={clients[0]}
+            client={client}
             canceled={() => setVisible("Table")}
             onChange={saveClient}
           />
