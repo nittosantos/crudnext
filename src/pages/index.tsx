@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import { useState } from "react";
 import { Button } from "../components/Button";
 import { Form } from "../components/Form";
 import { Layout } from "../components/Layout";
@@ -18,20 +19,39 @@ const Home: NextPage = () => {
 
   const clientExcluded = (client: Client) => {};
 
+  function saveClient(client: Client) {
+    console.log(client);
+  }
+
+  const [visible, setVisible] = useState<"Table" | "Form">("Table");
+
   return (
     <div className="flex justify-center items-center h-screen">
       <Layout title="Cadastro Simples">
-        <div className="flex justify-end">
-          <Button color="green" className="mb-4">
-            Novo Cliente
-          </Button>
-        </div>
-        <Table
-          clients={clients}
-          selectedClient={selectedClient}
-          clientExcluded={clientExcluded}
-        />
-        <Form client={clients[0]} />
+        {visible === "Table" ? (
+          <>
+            <div className="flex justify-end">
+              <Button
+                color="green"
+                className="mb-4"
+                onClick={() => setVisible("Form")}
+              >
+                Novo Cliente
+              </Button>
+            </div>
+            <Table
+              clients={clients}
+              selectedClient={selectedClient}
+              clientExcluded={clientExcluded}
+            />
+          </>
+        ) : (
+          <Form
+            client={clients[0]}
+            canceled={() => setVisible("Table")}
+            onChange={saveClient}
+          />
+        )}
       </Layout>
     </div>
   );
