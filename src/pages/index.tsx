@@ -1,32 +1,41 @@
 import type { NextPage } from "next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { CollectionClient } from "../backend/db/CollectionClient";
 import { Button } from "../components/Button";
 import { Form } from "../components/Form";
 import { Layout } from "../components/Layout";
 import { Table } from "../components/Table";
 import { Client } from "../core/Client";
+import { ClientRepo } from "../core/ClientRepo";
 
 const Home: NextPage = () => {
+  const repo: ClientRepo = new CollectionClient();
   const [visible, setVisible] = useState<"Table" | "Form">("Table");
+  const [clients, setClients] = useState<Client[]>([]);
   const [client, setClient] = useState<Client>(Client.void());
 
-  const clients = [
-    new Client("Nitto", 34, "1"),
-    new Client("Jorge", 21, "2"),
-    new Client("Carlos", 32, "3"),
-    new Client("Vinicius", 27, "4"),
-    new Client("Juliana", 25, "5"),
-  ];
+  useEffect(getAll, []);
 
-  const selectedClient = (client: Client) => {
+  function getAll() {
+    repo.findAll().then((clients) => {
+      setClients(clients);
+      setVisible("Table");
+    });
+  }
+
+  function selectedClient(client: Client) {
     setClient(client);
     setVisible("Form");
-  };
+  }
 
-  const clientExcluded = (client: Client) => {};
+  async function clientExcluded(client: Client) {
+    await repo.delete(client);
+    getAll();
+  }
 
-  function saveClient(client: Client) {
-    setVisible("Table");
+  async function saveClient(client: Client) {
+    await repo.save(client);
+    getAll();
   }
 
   function newClient() {
