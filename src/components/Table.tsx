@@ -4,15 +4,15 @@ import { PencilLine, Trash } from "phosphor-react";
 interface TableProps {
   clients: Client[];
   selectedClient?: (client: Client) => void;
-  clientExcluded?: (client: Client) => void;
+  deleteClient?: (client: Client) => void;
 }
 
 export const Table = ({
   clients,
   selectedClient,
-  clientExcluded,
+  deleteClient,
 }: TableProps) => {
-  const hasActions = selectedClient || clientExcluded;
+  const hasActions = selectedClient || deleteClient;
   const renderHeader = () => {
     return (
       <tr>
@@ -53,9 +53,9 @@ export const Table = ({
           </button>
         )}
 
-        {clientExcluded && (
+        {deleteClient && (
           <button
-            onClick={() => clientExcluded?.(client)}
+            onClick={() => deleteClient?.(client)}
             className="flex justify-center items-center text-red-600 rounded-full p-2 m-1
             hover:bg-purple-50"
           >
