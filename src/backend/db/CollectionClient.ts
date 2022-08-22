@@ -25,7 +25,7 @@ export class CollectionClient implements ClientRepo {
     } else {
       const docRef = await this.collection().add(client);
       const doc = await docRef.get()
-      return doc.data()
+      return doc.data() as Client
     }
   }
   async delete(client: Client): Promise<void> {
